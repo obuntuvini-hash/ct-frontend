@@ -9,11 +9,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(__dirname));
+// Serve from browser/ subfolder (Angular 19 SSR build output)
+const staticRoot = path.join(__dirname, 'browser');
+app.use(express.static(staticRoot));
 
 // SPA fallback
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(staticRoot, 'index.html'));
 });
 
 app.listen(PORT, () => console.log(`CT Frontend on port ${PORT}`));
